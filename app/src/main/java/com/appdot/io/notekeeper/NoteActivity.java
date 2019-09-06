@@ -1,5 +1,6 @@
 package com.appdot.io.notekeeper;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -12,11 +13,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
+    public static final String NOTE_INFO = "com.appdot.io.notekeeper.NOTE_INFO";
+    private NoteInfo mNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +33,37 @@ public class NoteActivity extends AppCompatActivity {
 
         List<CourseInfo> courses = DataManager.getInstance().getCourses();
 
+        //Arrray for Spinner
         ArrayAdapter<CourseInfo> adapterCourses =
                                     new ArrayAdapter<>(this, android.R.layout.simple_spinner_item
                                     ,courses);
 
+         //Spinner Layout
          adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+         //Spinner Adapter
          spinnerCourses.setAdapter(adapterCourses);
 
+         readDisplayDataValues();
+
+        EditText textNoteTitle = findViewById(R.id.text_note_title);
+        EditText textNoteText = findViewById(R.id.text_note_text);
+
+        displayNote(spinnerCourses, textNoteTitle, textNoteText);
+    }
+
+    private void displayNote(Spinner spinnerCourses, EditText textNoteTitle, EditText textNoteText) {
+        List<CourseInfo> courses = DataManager.getInstance().getCourses();
+
+        int courseIndex =  courses.indexOf(mNote.getCourse());
+        spinnerCourses.setSelection(courseIndex);
+
+        textNoteTitle.setText(mNote.getTitle());
+        textNoteText.setText(mNote.getText());
+    }
+
+    private void readDisplayDataValues() {
+        Intent intent = getIntent();
+        mNote = intent.getParcelableExtra(NOTE_INFO);
     }
 
     @Override
