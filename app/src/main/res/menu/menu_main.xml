@@ -4,7 +4,11 @@
     tools:context="com.appdot.io.notekeeper.NoteActivity">
     <item
         android:id="@+id/action_send_mail"
-        android:orderInCategory="100"
+        android:orderInCategory="2"
         android:title="Send as Email"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_cancel"
+        android:orderInCategory="1"
+        android:title="@android:string/cancel" />
 </menu>
